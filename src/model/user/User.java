@@ -49,12 +49,14 @@ public abstract class User {
         this.balance += balance;
     }
 
+    public double getTotal() {
+        return cart.calculateTotal();
+    }
     public void checkout() {
-        double total = cart.calculateTotal();
-        if (balance <= total){
+        if (balance <= getTotal()){
             System.out.println("Saldo kurang");
         } else {
-            balance -= total;
+            balance -= getTotal();
             System.out.println("Sukses");
             System.out.println(balance);
         }

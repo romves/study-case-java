@@ -1,27 +1,22 @@
 package model.user;
 
+import model.promo.Promo;
+import model.promo.PromoCode;
+import utils.DateUtils;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Member extends User{
+public class Member extends User implements Promo {
     private String memberName;
     private Date joinedDate;
+    private PromoCode promoCode;
 
-    public Member(String id, String memberName, String joinedDate, double balance) {
+    public Member(String id, String memberName, String joinedDate, double balance) throws ParseException {
         super(id, balance);
         this.memberName = memberName;
-        this.joinedDate =  convertStringToDate(joinedDate);
-    }
-
-    private Date convertStringToDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            return dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            System.out.println("Invalid date format. Please enter a date in yyyy/MM/dd format.");
-            return null;
-        }
+        this.joinedDate = DateUtils.convertStringToDate(joinedDate);
+        this.promoCode = null;
     }
 
     public String getMemberName() {
@@ -36,7 +31,22 @@ public class Member extends User{
         return 0;
     }
 
+    @Override
+    public void applyPromoCode(PromoCode promoCode) {
+        //TODO add promo checking
+        this.promoCode = promoCode;
+        System.out.println("Promo code applied");
+    }
 
+    @Override
+    public double getTotal() {
+        if (promoCode != null ) {
+            double total;
+            total = getCart().calculateTotal() - (getCart().calculateTotal() * promoCode.getPercentCut()/100);
+            return total;
+        }
+        return getCart().calculateTotal();
+    }
 }
 
 
