@@ -33,10 +33,6 @@ public abstract class User {
         return cart;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
     public void addToCart(Menu menu){
         cart.addItem(menu);
     }
@@ -49,15 +45,15 @@ public abstract class User {
         this.balance += balance;
     }
 
-    public double getTotal() {
+    public double getSubtotal() {
         return cart.calculateTotal();
     }
     public void checkout() {
-        if (balance <= getTotal()){
-            System.out.println("Saldo kurang");
+        if (balance <= getSubtotal()){
+            System.out.println("Saldo kurang " + getUserID());
         } else {
-            balance -= getTotal();
-            System.out.println("Sukses");
+            balance -= getSubtotal();
+            System.out.println("Checkout Sukses " + getUserID());
             System.out.println(balance);
         }
     }
@@ -77,5 +73,7 @@ public abstract class User {
         }
     }
 
-    public void generateReceipt() {}
+    public void generateReceipt() {
+
+    }
 }

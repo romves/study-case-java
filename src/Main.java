@@ -5,19 +5,15 @@ import model.user.Guest;
 import model.user.Member;
 import model.user.User;
 
-import java.text.ParseException;
-
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
         //create menu DONE
         Menu menu = new Cetak("M001","Sistem Operasi", 45_000);
         Menu menu1 = new Cetak("M002","PBO", 55_000);
         Menu menu2 = new Fotokopi("M003","A4 WARNA", 2_000);
 
         //create user DONE
-        User user = new Guest("A001", 110_000);
+        User user = new Guest("A001", 90_000);
         Member user1 = new Member("A002", "Budi","2023/05/20", 20_000);
 
         //create promo DONE
@@ -30,6 +26,8 @@ public class Main {
         user.addToCart(menu1);
         user.addToCart(menu2);
         user1.addToCart(menu2);
+        user1.addToCart(menu);
+        user1.addToCart(menu);
 
         //remove from cart DONE
         user.removeFromCart(menu);
@@ -39,8 +37,11 @@ public class Main {
         user1.applyPromoCode(promo);
 
         //view cart
-        user.viewCartItems();
-        user1.viewCartItems();
+//        user.viewCartItems();
+
+        //generateReceipt
+        user.generateReceipt();
+        user1.generateReceipt();
 
         //popup balance
         user.balanceTopup(100_000);
@@ -49,8 +50,6 @@ public class Main {
         //checkout
         user.checkout();
         user1.checkout();
-
-        //generate receipt
 
         //show checkout history
     }

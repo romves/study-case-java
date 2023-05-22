@@ -1,23 +1,25 @@
 package model.promo;
 
-import utils.DateUtils;
-import java.text.ParseException;
-import java.util.Date;
+import utils.LocalDateUtils;
+
+import java.time.LocalDate;
+
+import static utils.LocalDateUtils.isCurrentDateInRange;
 
 public class PromoCode {
      PROMO type;
      String promoCode;
-     Date startedAt;
-     Date expiredAt;
+     LocalDate startedAt;
+     LocalDate expiredAt;
      int percentCut;
      double maxPriceCut;
      double minApplicablePrice;
 
-     public PromoCode(PROMO type, String promoCode, String startedAt, String expiredAt, String percentCut, double maxPriceCut, double minAppliablePrice) throws ParseException {
+     public PromoCode(PROMO type, String promoCode, String startedAt, String expiredAt, String percentCut, double maxPriceCut, double minAppliablePrice) {
           this.type = type;
           this.promoCode = promoCode;
-          this.startedAt = DateUtils.convertStringToDate(startedAt);
-          this.expiredAt = DateUtils.convertStringToDate(expiredAt);
+          this.startedAt = LocalDateUtils.convertStringToLocalDate(startedAt);
+          this.expiredAt = LocalDateUtils.convertStringToLocalDate(expiredAt);
           this.percentCut = Integer.parseInt(percentCut.replace("%", ""));
           this.maxPriceCut = maxPriceCut;
           this.minApplicablePrice = minAppliablePrice;
@@ -27,11 +29,11 @@ public class PromoCode {
           return promoCode;
      }
 
-     public Date getStartedAt() {
+     public LocalDate getStartedAt() {
           return startedAt;
      }
 
-     public Date getExpiredAt() {
+     public LocalDate getExpiredAt() {
           return expiredAt;
      }
 
@@ -46,5 +48,11 @@ public class PromoCode {
      public double getMinApplicablePrice() {
           return minApplicablePrice;
      }
+
+     public boolean isValid() {
+          return isCurrentDateInRange(startedAt, expiredAt);
+     }
+
+     //TODO DURUNG BENER
 }
 
