@@ -31,7 +31,7 @@ public class Cart {
             if (item.getMenu().equals(menu)) {
                 item.decrementQuantity();
                 if (item.getQuantity() == 0) {
-                    items.remove(menu);
+                    items.remove(item);
                 }
                 return;
             }
