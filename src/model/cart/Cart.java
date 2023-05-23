@@ -35,13 +35,13 @@ public class Cart {
     public void addItem(Menu menu, int quantity) {
         for (CartItem item : items) {
             if (item.getMenu().equals(menu)) {
-                System.out.printf("%s %s %s\n", item.getQuantity(), menu.getMenuName(), "IS INCREMENTED");
+                System.out.printf("%s %s %s %s\n","ADD_TO_CART SUCCESS:", item.getQuantity(), menu.getMenuName(), "IS INCREMENTED");
                 item.incrementQuantity(quantity);
                 return;
             }
         }
         items.add(new CartItem(menu, quantity));
-        System.out.printf("%s %s %s\n", quantity, menu.getMenuName(), "IS ADDED");
+        System.out.printf("%s %s %s %s\n","ADD_TO_CART SUCCESS:", quantity, menu.getMenuName(), "IS ADDED");
     }
 
     public void removeItem(Menu menu, int quantity) {
@@ -75,11 +75,10 @@ public class Cart {
                 user.setBalance(user.getBalance() - getTotalPrice());
             }
             orderList.handleCheckout(this);
-            if (user instanceof Member) {
-               ((Member) user).clearPromoCode();
-            }
             clearCart();
-
+            if (user instanceof Member) {
+                ((Member) user).clearPromoCode();
+            }
             System.out.printf("%s: %s %s\n","CHECK_OUT SUCCESS", user.getUserID(), user.getUserName());
         }
     }
@@ -130,7 +129,7 @@ public class Cart {
         String total = formatter.format(getTotalPrice()); //total harga
         String balance = formatter.format(user.getBalance()); //saldo
         System.out.printf("%-27s: %9s\n", "Total",subtotal);
-        if (user instanceof Member) {
+        if (user instanceof Member ) {
             if (((Member) user).getUserPromo() != null) {
                 if (((Member) user).getUserPromo() instanceof DiscountPromo) {
                     String discount = formatter.format(-((Member) user).getUserPromo().getPricePromo(getItemSubTotal()));

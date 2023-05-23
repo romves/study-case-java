@@ -21,8 +21,12 @@ public class Order {
     private User user;
 
     public Order(User user){
-        this.user = user;
         this.orders = new ArrayList<OrderItem>();
+        this.user = user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void handleCheckout(Cart cart) {
@@ -30,6 +34,7 @@ public class Order {
         if (user instanceof Member) {
             if (((Member) user).getUserPromo() != null) {
                 appliedPromo = ((Member) user).getUserPromo().getPromoCode();
+                setUser(user.clone());
             }
         } else {
             appliedPromo = "";
@@ -59,7 +64,15 @@ public class Order {
 
     public double getTotalPrice(double itemSubTotal) {
         double total = 0.0;
-        total = itemSubTotal + user.getShippingCost();
+        if (user instanceof Member ) {
+            if (((Member) user).getUserPromo() instanceof DiscountPromo) {
+                return itemSubTotal + user.getShippingCost() - ((Member) user).getUserPromo().getPricePromo(itemSubTotal);
+            }
+            if (((Member) user).getUserPromo() instanceof DeliveryPromo) {
+                return itemSubTotal + user.getShippingCost() - ((Member) user).getUserPromo().getPricePromo(itemSubTotal);
+            }
+        }
+        total = itemSubTotal + user.getShippingCost() ;
         return total;
     }
 
@@ -76,6 +89,7 @@ public class Order {
         System.out.printf("%3s | %-20s | %3s | %8s \n", "No", "Menu", "Qty", "Subtotal");
         System.out.println("==================================================");
         int i=1;
+        // require last order
         OrderItem lastOrdered =  orders.get(orders.size() - 1);
         for (CartItem cartItem : lastOrdered.getOrderedItem()) {
             Menu menu = cartItem.getMenu();
@@ -120,4 +134,6 @@ public class Order {
         System.out.printf("%-27s: %9s\n", "Sisa Saldo", balance); //shopping cart Saldo bukan Sisa saldo
         System.out.println();
     }
+
+
 }

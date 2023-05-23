@@ -65,6 +65,10 @@ public abstract class User implements Cloneable {
     }
 
     public void viewCartItems() {
+       if(cart.getListItem().isEmpty()) {
+           orderList.getLastOrderDetails();
+           return;
+       }
         cart.viewAllCartItem();
     }
 
@@ -72,8 +76,13 @@ public abstract class User implements Cloneable {
         orderList.getOrderHistory();
     }
 
-    public void viewLastOrderDetails() {
-        orderList.getLastOrderDetails();
+    @Override
+    public User clone() {
+        try {
+            return (User) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // Handle the exception, e.g., log it or throw a runtime exception
+            return null;
+        }
     }
-
 }

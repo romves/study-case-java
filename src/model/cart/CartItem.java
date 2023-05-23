@@ -4,7 +4,7 @@ import model.Menu;
 
 public class CartItem {
     private Menu menu;
-    private int quantity;
+    private int quantity = 0;
 
     public CartItem(Menu menu, int quantity) {
         this.menu = menu;
@@ -20,7 +20,7 @@ public class CartItem {
     }
 
     public void incrementQuantity(int quantity) {
-       this.quantity += quantity;
+       this.quantity = getQuantity() + quantity;
     }
 
     public void decrementQuantity(int quantity) {

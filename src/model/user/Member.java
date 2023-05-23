@@ -36,10 +36,10 @@ public class Member extends User implements Promo{
                 System.out.println("APPLY_PROMO SUCCESS: " + getUserPromo().getPromoCode());
                 return;
             }
-            System.out.println("Promo code expired");
+            System.out.println("APPLY_PROMO FAILED: "+ promoCode.getPromoCode() +" is EXPIRED");
             return;
         }
-        System.out.println("Promo Ineligible");
+        System.out.println("APPLY_PROMO FAILED " + promoCode.getPromoCode());
     }
 
     public PromoCode getUserPromo() {
@@ -49,16 +49,6 @@ public class Member extends User implements Promo{
     public void clearPromoCode() {
         this.promoCode = null;
     }
-
-    //    @Override
-//    public double getSubtotal() {
-//        if (promoCode != null ) {
-//            double total;
-//            total = getCart().calculateTotal() - (getCart().calculateTotal() * promoCode.getPercentCut()/100);
-//            return total;
-//        }
-//        return getCart().calculateTotal();
-//    }
 }
 
 
