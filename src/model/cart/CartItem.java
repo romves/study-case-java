@@ -6,9 +6,9 @@ public class CartItem {
     private Menu menu;
     private int quantity;
 
-    public CartItem(Menu menu) {
+    public CartItem(Menu menu, int quantity) {
         this.menu = menu;
-        this.quantity = 1;
+        this.quantity = quantity;
     }
 
     public Menu getMenu() {
@@ -19,12 +19,12 @@ public class CartItem {
         return quantity;
     }
 
-    public void incrementQuantity() {
-        quantity++;
+    public void incrementQuantity(int quantity) {
+       this.quantity += quantity;
     }
 
-    public void decrementQuantity() {
-        quantity--;
+    public void decrementQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public double getSubtotal() {

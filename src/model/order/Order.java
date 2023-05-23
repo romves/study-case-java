@@ -1,95 +1,62 @@
-package model.cart;
+package model.order;
 
 import model.Menu;
-import model.order.Order;
+import model.cart.Cart;
+import model.cart.CartItem;
 import model.user.User;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart {
-    private List<CartItem> items;
-    private Order orderList;
+public class Order {
+    private List<OrderItem> orders;
     private User user;
 
-    public Cart(User user, Order orderList) {
+    public Order(User user){
         this.user = user;
-        this.items = new ArrayList<CartItem>();
-        this.orderList = orderList;
+        this.orders = new ArrayList<OrderItem>();
     }
 
-    public List<CartItem> getListItem() {
-        return items;
+    public void handleCheckout(Cart cart) {
+        orders.add(new OrderItem(cart.getListItem()));
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void addItem(Menu menu, int quantity) {
-        for (CartItem item : items) {
-            if (item.getMenu().equals(menu)) {
-                System.out.printf("%s %s %s\n", item.getQuantity(), menu.getMenuName(), "IS INCREMENTED");
-                item.incrementQuantity(quantity);
-                return;
-            }
-        }
-        items.add(new CartItem(menu, quantity));
-        System.out.printf("%s %s %s\n", quantity, menu.getMenuName(), "IS ADDED");
-    }
-
-    public void removeItem(Menu menu, int quantity) {
-        for (CartItem item : items) {
-            if (item.getMenu().equals(menu) && item.getQuantity() >= quantity) {
-                System.out.printf("%s %s %s\n", item.getQuantity(), menu.getMenuName(), "IS DECREMENTED");
-                item.decrementQuantity(quantity);
-                if (item.getQuantity() <= 0) {
-                    items.remove(item);
-                    System.out.printf("%s %s\n", menu.getMenuName(), "IS REMOVED");
-                }
-                return;
-            }
-        }
-    }
-
-    public void clearCart() {
-        items.clear();
-    }
-
-    public void checkoutCart() {
-        //TODO pass cart to orderlist
-        if (user.getBalance() <= getTotalPrice()){
-            System.out.printf("%s: %s %s %s\n","CHECK_OUT FAILED", user.getUserID(), user.getUserName(),"INSUFFICIENT BALANCE");
-        } else {
-            double total = 0.0;
-            user.setBalance(user.getBalance() - getTotalPrice());
-            orderList.handleCheckout(this);
-            clearCart();
-
-            System.out.printf("%s: %s %s\n","CHECK_OUT SUCCESS", user.getUserID(), user.getUserName());
-        }
-    }
-
-    public double getItemSubTotal(){
-        double total = 0.0;
-        for (CartItem item : items) {
-            total += item.getSubtotal();
-        }
-        return total;
-    }
-
-    public double getTotalPrice() {
-        double total = 0.0;
-        total = getItemSubTotal() + user.getShippingCost();
-        return total;
-    }
-
-    public void viewAllCartItem() {
+    public void getOrderHistory() {
         System.out.println();
         System.out.println("Kode Pelanggan: " + user.getUserID());
         System.out.println("Nama: " + user.getUserName());
+        System.out.println("Saldo: "+ user.getBalance());
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator(',');
+        symbols.setGroupingSeparator('.');
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        System.out.printf("%3s | %-13s | %6s | %8s | %5s \n", "No", "Nomor Pesanan" , "Jumlah", "Subtotal", "PROMO");
+        System.out.println("==================================================");
+        int i=1;
+        for (OrderItem orderItem : orders) {
+//            String subtotal = formatter.format(menu.getPrice()*cartItem.getQuantity());
+            System.out.printf("%3d | %13d | %6d | %8s | %5s \n", i, OrderItem.getOrderNumber(), orderItem.getQuantity(), orderItem.getItemSubTotal(), "PROMO");
+            i++;
+        }
+        System.out.println("==================================================");
+    }
+
+    public double getTotalPrice(double itemSubTotal) {
+        double total = 0.0;
+        total = itemSubTotal + user.getShippingCost();
+        return total;
+    }
+
+    public void getLastOrderDetails() {
+        System.out.println();
+        System.out.println("Kode Pelanggan: " + user.getUserID());
+        System.out.println("Nama: " + user.getUserName());
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        System.out.println("Tanggal Pesanan: " + LocalDate.now().format(dateFormat));
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(',');
         symbols.setGroupingSeparator('.');
@@ -97,7 +64,8 @@ public class Cart {
         System.out.printf("%3s | %-20s | %3s | %8s \n", "No", "Menu", "Qty", "Subtotal");
         System.out.println("==================================================");
         int i=1;
-        for (CartItem cartItem : items) {
+        OrderItem lastOrdered =  orders.get(orders.size() - 1);
+        for (CartItem cartItem : lastOrdered.getOrderedItem()) {
             Menu menu = cartItem.getMenu();
             String menuName = menu.getMenuName().length() >= 20 ? menu.getMenuName().substring(0, 20) : menu.getMenuName();
             String subtotal = formatter.format(menu.getPrice()*cartItem.getQuantity());
@@ -105,9 +73,9 @@ public class Cart {
             i++;
         }
         System.out.println("==================================================");
-        String subtotal = formatter.format(getItemSubTotal()); //subtotal
+        String subtotal = formatter.format(lastOrdered.getItemSubTotal()); //subtotal
         String delivery = formatter.format(user.getShippingCost()); //biaya ongkir
-        String total = formatter.format(getTotalPrice()); //total harga
+        String total = formatter.format(getTotalPrice(lastOrdered.getItemSubTotal())); //total harga
         String balance = formatter.format(user.getBalance()); //saldo
         System.out.printf("%-27s: %9s\n", "Total",subtotal);
 //        if (this.getPromo() != null){
@@ -144,7 +112,7 @@ public class Cart {
 //                        this.getPromo().getPromoCode(), cashback);
 //            }
 //        }
-        System.out.printf("%-27s: %9s\n", "Saldo", balance); //shopping cart Saldo bukan Sisa saldo
+        System.out.printf("%-27s: %9s\n", "Sisa Saldo", balance); //shopping cart Saldo bukan Sisa saldo
         System.out.println();
     }
 }

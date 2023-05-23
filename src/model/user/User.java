@@ -1,8 +1,8 @@
 package model.user;
 
 import model.cart.Cart;
-import model.cart.CartItem;
 import model.Menu;
+import model.order.Order;
 
 import java.util.List;
 
@@ -10,11 +10,19 @@ public abstract class User {
     private final String userID;
     private double balance;
     private Cart cart;
+    private Order orderList;
+    String userName;
 
     public User(String userID, double balance){
         this.userID = userID;
+        this.userName = "Guest";
         this.balance = balance;
-        this.cart = new Cart();
+        this.orderList = new Order(this);
+        this.cart = new Cart(this, this.orderList);
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public String getUserID() {
@@ -29,51 +37,42 @@ public abstract class User {
         this.balance = balance;
     }
 
+    public double getShippingCost() {
+        return 15_000;
+    }
+
     public Cart getCart() {
         return cart;
     }
 
-    public void addToCart(Menu menu){
-        cart.addItem(menu);
+    public void addToCart(Menu menu, int quantity){
+        cart.addItem(menu, quantity);
     }
 
-    public void removeFromCart(Menu menu) {
-        cart.removeItem(menu);
+    public void removeFromCart(Menu menu, int quantity) {
+        cart.removeItem(menu, quantity);
     }
 
     public void balanceTopup(double balance) {
+        double before = 0;
+        before += this.balance;
         this.balance += balance;
+        System.out.printf("%s %s %s %s %s\n","TOPUP SUCCESS:", getUserName(), before , "=>", this.balance);
     }
 
-    public double getSubtotal() {
-        return cart.calculateTotal();
-    }
     public void checkout() {
-        if (balance <= getSubtotal()){
-            System.out.println("Saldo kurang " + getUserID());
-        } else {
-            balance -= getSubtotal();
-            System.out.println("Checkout Sukses " + getUserID());
-            System.out.println(balance);
-        }
+        cart.checkoutCart();
     }
 
     public void viewCartItems() {
-        System.out.println("Items in the cart:");
-        List<CartItem> cartItems = cart.getItems();
-        if (cartItems.isEmpty()) {
-            System.out.println("The cart is empty.");
-        } else {
-            for (CartItem cartItem : cartItems) {
-                Menu menu = cartItem.getMenu();
-                int quantity = cartItem.getQuantity();
-                double subtotal = cartItem.getSubtotal();
-                System.out.println("- " + menu.getMenuName() + " (Quantity: " + quantity + ") - Subtotal: $" + subtotal);
-            }
-        }
+        cart.viewAllCartItem();
     }
 
-    public void generateReceipt() {
+    public void viewOrderHistory() {
+        orderList.getOrderHistory();
+    }
 
+    public void viewLastOrderDetails() {
+        orderList.getLastOrderDetails();
     }
 }
