@@ -5,7 +5,7 @@ import model.promo.PromoCode;
 import utils.LocalDateUtils;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 public class Member extends User implements Promo{
     private final LocalDate joinedDate;
@@ -24,26 +24,30 @@ public class Member extends User implements Promo{
 
     public int getMemberAge() {
         LocalDate currentDate = LocalDate.now();
-        Period period = Period.between(joinedDate, currentDate);
-        int age = period.getDays();
-        return 0;
+        return (int)ChronoUnit.DAYS.between(joinedDate, currentDate);
     }
 
     @Override
     public void applyPromoCode(PromoCode promoCode) {
         //TODO add promo checking
-        if (getCart().getTotalPrice() > promoCode.getMinApplicablePrice() && getMemberAge() > 30 ) {
+        if (getCart().getItemSubTotal() > promoCode.getMinApplicablePrice() && getMemberAge() > 30 ) {
             if (promoCode.isValid()) {
                 this.promoCode = promoCode;
-                System.out.println("Promo code applied");
+                System.out.println("APPLY_PROMO SUCCESS: " + getUserPromo().getPromoCode());
+                return;
             }
             System.out.println("Promo code expired");
+            return;
         }
         System.out.println("Promo Ineligible");
     }
 
-    public PromoCode getPromoCode() {
+    public PromoCode getUserPromo() {
         return promoCode;
+    }
+
+    public void clearPromoCode() {
+        this.promoCode = null;
     }
 
     //    @Override

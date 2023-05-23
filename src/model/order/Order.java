@@ -3,6 +3,10 @@ package model.order;
 import model.Menu;
 import model.cart.Cart;
 import model.cart.CartItem;
+import model.promo.CashbackPromo;
+import model.promo.DeliveryPromo;
+import model.promo.DiscountPromo;
+import model.user.Member;
 import model.user.User;
 
 import java.text.DecimalFormat;
@@ -22,7 +26,15 @@ public class Order {
     }
 
     public void handleCheckout(Cart cart) {
-        orders.add(new OrderItem(cart.getListItem()));
+        String appliedPromo = "";
+        if (user instanceof Member) {
+            if (((Member) user).getUserPromo() != null) {
+                appliedPromo = ((Member) user).getUserPromo().getPromoCode();
+            }
+        } else {
+            appliedPromo = "";
+        }
+        orders.add(new OrderItem(cart.getListItem(), cart.getTotalPrice(), appliedPromo));
     }
 
     public void getOrderHistory() {
@@ -39,7 +51,7 @@ public class Order {
         int i=1;
         for (OrderItem orderItem : orders) {
 //            String subtotal = formatter.format(menu.getPrice()*cartItem.getQuantity());
-            System.out.printf("%3d | %13d | %6d | %8s | %5s \n", i, OrderItem.getOrderNumber(), orderItem.getQuantity(), orderItem.getItemSubTotal(), "PROMO");
+            System.out.printf("%3d | %13d | %6d | %8s | %5s \n", i, orderItem.getOrderNumber(), orderItem.getQuantity(), orderItem.getTotalPrice(), orderItem.getAppliedPromo());
             i++;
         }
         System.out.println("==================================================");
@@ -78,40 +90,33 @@ public class Order {
         String total = formatter.format(getTotalPrice(lastOrdered.getItemSubTotal())); //total harga
         String balance = formatter.format(user.getBalance()); //saldo
         System.out.printf("%-27s: %9s\n", "Total",subtotal);
-//        if (this.getPromo() != null){
-//            if (this.getPromo() instanceof DiscountPromotion){
-//                String discount = formatter.format(-
-//
-//                        this.getPromo().getTotalPriceOff(this));
-//                System.out.printf("%-27s: %9s\n", "PROMO: " +
-//
-//                        this.getPromo().getPromoCode(), discount);
-//            }
-//        }
+        if (user instanceof Member) {
+            if (((Member) user).getUserPromo() != null) {
+                if (((Member) user).getUserPromo() instanceof DiscountPromo) {
+                    String discount = formatter.format(-((Member) user).getUserPromo().getPricePromo(lastOrdered.getItemSubTotal()));
+                    System.out.printf("%-27s: %9s\n", "PROMO: " + ((Member) user).getUserPromo().getPromoCode(), discount);
+                }
+            }
+        }
         System.out.printf("%-27s: %9s\n", "Ongkos kirim", delivery);
-//        if (this.getPromo() != null){
-//            if (this.getPromo() instanceof DeliveryFeePromotion){
-//                String deliveryOff = formatter.format(-
-//                        this.getPromo().getTotalShippingFeeOff(this));
-//
-//                System.out.printf("%-27s: %9s\n", "PROMO: " +
-//
-//                        this.getPromo().getPromoCode(), deliveryOff);
-//            }
-//        }
+        if (user instanceof Member) {
+            if (((Member) user).getUserPromo() != null){
+                if (((Member) user).getUserPromo() instanceof DeliveryPromo){
+                    String deliveryOff = formatter.format(-((Member) user).getUserPromo().getPricePromo(lastOrdered.getItemSubTotal()));
+                    System.out.printf("%-27s: %9s\n", "PROMO: " + ((Member) user).getUserPromo().getPromoCode(), deliveryOff);
+                }
+            }
+        }
         System.out.println("==================================================");
         System.out.printf("%-27s: %9s\n", "Total", total);
-//        if (this.getPromo() != null){
-//            if (this.getPromo() instanceof CashbackPromotion){
-//                String cashback = formatter.format(-
-//
-//                        this.getPromo().getTotalCashback(this));
-//
-//                System.out.printf("%-27s: %9s\n", "PROMO: " +
-//
-//                        this.getPromo().getPromoCode(), cashback);
-//            }
-//        }
+        if (user instanceof Member) {
+            if (((Member) user).getUserPromo() != null){
+                if (((Member) user).getUserPromo() instanceof CashbackPromo){
+                    String cashback = formatter.format(((Member) user).getUserPromo().getPricePromo(lastOrdered.getItemSubTotal()));
+                    System.out.printf("%-27s: %9s\n", "PROMO: " + ((Member) user).getUserPromo().getPromoCode(), cashback);
+                }
+            }
+        }
         System.out.printf("%-27s: %9s\n", "Sisa Saldo", balance); //shopping cart Saldo bukan Sisa saldo
         System.out.println();
     }

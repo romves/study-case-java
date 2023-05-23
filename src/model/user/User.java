@@ -6,7 +6,7 @@ import model.order.Order;
 
 import java.util.List;
 
-public abstract class User {
+public abstract class User implements Cloneable {
     private final String userID;
     private double balance;
     private Cart cart;
@@ -75,4 +75,5 @@ public abstract class User {
     public void viewLastOrderDetails() {
         orderList.getLastOrderDetails();
     }
+
 }

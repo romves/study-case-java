@@ -1,6 +1,5 @@
 import model.*;
-import model.promo.PROMO;
-import model.promo.PromoCode;
+import model.promo.*;
 import model.user.Guest;
 import model.user.Member;
 import model.user.User;
@@ -13,11 +12,14 @@ public class Main {
         Menu menu2 = new Fotokopi("M003","A4 WARNA", 2_000, true);
 
         //create user DONE
-        User user = new Guest("A001", 90_000);
-        Member user1 = new Member("A002", "Budi","2023/05/20", 20_000);
+        User user = new Guest("G001", 150_000);
+        Member user1 = new Member("A001", "Ani","2023/01/20", 100_000);
+        Member user2 = new Member("A002", "Budi","2023/05/20", 200_000);
 
         //create promo DONE
-        PromoCode promo = new PromoCode(PROMO.DELIVERY, "ONGKIR30", "2023/05/01", "2023/05/31", "30%", 10000,40000);
+        PromoCode promo = new DeliveryPromo("ONGKIR30", "2023/05/01", "2023/05/31", "30%", 10000,40000);
+        PromoCode promo2 = new CashbackPromo("CASHBACK20", "2023/05/01", "2023/05/31", "30%", 50000,40000);
+        PromoCode promo3 = new DiscountPromo("DISC35", "2023/05/01", "2023/05/31", "30%", 10000,40000);
 
         //add to cart DONE
         user.addToCart(menu, 1);
@@ -27,17 +29,19 @@ public class Main {
         user1.addToCart(menu2, 1);
         user1.addToCart(menu, 1);
         user1.addToCart(menu, 1);
+        user2.addToCart(menu, 1);
 
         //remove from cart DONE
         user.removeFromCart(menu, 1);
         user.removeFromCart(menu2, 1);
 
-        //TODO apply promo
-        user1.applyPromoCode(promo);
+        //apply promo
+        user1.applyPromoCode(promo2);
 
         //view cart before checkout DONE
         user.viewCartItems();
         user1.viewCartItems();
+        user2.viewCartItems();
 
         //popup balance DONE
         user.balanceTopup(100_000);

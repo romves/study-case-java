@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import static utils.LocalDateUtils.isCurrentDateInRange;
 
 public class PromoCode {
-     PROMO type;
      String promoCode;
      LocalDate startedAt;
      LocalDate expiredAt;
@@ -15,14 +14,13 @@ public class PromoCode {
      double maxPriceCut;
      double minApplicablePrice;
 
-     public PromoCode(PROMO type, String promoCode, String startedAt, String expiredAt, String percentCut, double maxPriceCut, double minAppliablePrice) {
-          this.type = type;
+     public PromoCode(String promoCode, String startedAt, String expiredAt, String percentCut,  double minApplicablePrice, double maxPriceCut) {
           this.promoCode = promoCode;
           this.startedAt = LocalDateUtils.convertStringToLocalDate(startedAt);
           this.expiredAt = LocalDateUtils.convertStringToLocalDate(expiredAt);
           this.percentCut = Integer.parseInt(percentCut.replace("%", ""));
           this.maxPriceCut = maxPriceCut;
-          this.minApplicablePrice = minAppliablePrice;
+          this.minApplicablePrice = minApplicablePrice;
      }
 
      public String getPromoCode() {
@@ -53,6 +51,10 @@ public class PromoCode {
           return isCurrentDateInRange(startedAt, expiredAt);
      }
 
-     //TODO DURUNG BENER
+     public double getPricePromo(double normalPrice) {
+         double priceOff = 0.0;
+         priceOff = normalPrice * getPercentCut()/100;
+         return priceOff > maxPriceCut ? maxPriceCut : priceOff;
+     }
 }
 
