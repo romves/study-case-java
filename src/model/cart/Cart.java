@@ -35,7 +35,7 @@ public class Cart {
     public void addItem(Menu menu, int quantity) {
         for (CartItem item : items) {
             if (item.getMenu().equals(menu)) {
-                System.out.printf("%s %s %s %s\n","ADD_TO_CART SUCCESS:", item.getQuantity(), menu.getMenuName(), "IS INCREMENTED");
+                System.out.printf("%s %s %s %s\n","ADD_TO_CART SUCCESS:", quantity, menu.getMenuName(), "IS INCREMENTED");
                 item.incrementQuantity(quantity);
                 return;
             }

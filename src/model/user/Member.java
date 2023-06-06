@@ -29,7 +29,6 @@ public class Member extends User implements Promo{
 
     @Override
     public void applyPromoCode(PromoCode promoCode) {
-        //TODO add promo checking
         if (getCart().getItemSubTotal() > promoCode.getMinApplicablePrice() && getMemberAge() > 30 ) {
             if (promoCode.isValid()) {
                 this.promoCode = promoCode;

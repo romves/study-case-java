@@ -11,8 +11,6 @@ import model.user.User;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +78,8 @@ public class Order {
         System.out.println();
         System.out.println("Kode Pelanggan: " + user.getUserID());
         System.out.println("Nama: " + user.getUserName());
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
-        System.out.println("Tanggal Pesanan: " + LocalDate.now().format(dateFormat));
+        System.out.println("Nomor Pesanan: " + orders.get(orders.size() - 1).getOrderNumber());
+        System.out.println("Tanggal Pesanan: " +  orders.get(orders.size() - 1).getCreatedAt());
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(',');
         symbols.setGroupingSeparator('.');

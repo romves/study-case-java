@@ -4,8 +4,6 @@ import model.cart.Cart;
 import model.Menu;
 import model.order.Order;
 
-import java.util.List;
-
 public abstract class User implements Cloneable {
     private final String userID;
     private double balance;
