@@ -1,3 +1,4 @@
+import data.DataManager;
 import model.*;
 import model.promo.*;
 import model.user.Guest;
@@ -12,12 +13,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        HashMap<String, User> members = new HashMap<>();
-        HashMap<String, User> guests = new HashMap<>();
-        HashMap<String, Menu> menus = new HashMap<>();
-        HashMap<String, PromoCode> promos = new HashMap<>();
+        HashMap<String, User> users = DataManager.users;
+        HashMap<String, Menu> menus = DataManager.menus;
+        HashMap<String, PromoCode> promos = DataManager.promos;
         List<String> commands = new ArrayList<>();
-
+        
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
 
@@ -42,11 +42,11 @@ public class Main {
                             String memberName = memberData[1];
                             String memberJoinDate = memberData[2];
                             double memberBalance = Double.parseDouble(memberData[3]);
-                            if (members.containsKey(memberId)) {
+                            if (users.containsKey(memberId)) {
                                 System.out.println("CREATE MEMBER FAILED: " + memberId + " IS EXISTS");
                             } else {
                                 User member = new Member(memberId, memberName, memberJoinDate, memberBalance);
-                                members.put(memberId, member);
+                                users.put(memberId, member);
                                 System.out.printf("%s %s %s\n", "CREATE MEMBER SUCCESS:", memberId, memberName);
                             }
                         }
@@ -54,11 +54,11 @@ public class Main {
                             String[] guestData = parts[2].split("\\|");
                             String guestId = guestData[0];
                             double guestBalance = Double.parseDouble(guestData[1]);
-                            if (guests.containsKey(guestId)) {
+                            if (users.containsKey(guestId)) {
                                 System.out.println("CREATE GUEST FAILED: " + guestId + " IS EXISTS");
                             } else {
                                 User guest = new Guest(guestId, guestBalance);
-                                guests.put(guestId, guest);
+                                users.put(guestId, guest);
                                 System.out.printf("%s %s\n", "CREATE GUEST SUCCESS:", guestId);
                             }
                         }
@@ -135,16 +135,16 @@ public class Main {
                     String userId = parts[1];
                     String menuId = parts[2];
                     int quantity = Integer.parseInt(parts[3]);
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         if (menus.containsKey(menuId)) {
                             Menu menu = menus.get(menuId);
                             member.addToCart(menu, quantity);
                         } else {
                             System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                         }
-                    } else if (guests.containsKey(userId)) {
-                        User guest = guests.get(userId);
+                    } else if (users.containsKey(userId)) {
+                        User guest = users.get(userId);
                         if (menus.containsKey(menuId)) {
                             Menu menu = menus.get(menuId);
                             guest.addToCart(menu, quantity);
@@ -159,16 +159,16 @@ public class Main {
                     String userId = parts[1];
                     String menuId = parts[2];
                     int quantity = Integer.parseInt(parts[3]);
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         if (menus.containsKey(menuId)) {
                             Menu menu = menus.get(menuId);
                             member.removeFromCart(menu, quantity);
                         } else {
                             System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
                         }
-                    } else if (guests.containsKey(userId)) {
-                        User guest = guests.get(userId);
+                    } else if (users.containsKey(userId)) {
+                        User guest = users.get(userId);
                         if (menus.containsKey(menuId)) {
                             Menu menu = menus.get(menuId);
                             guest.removeFromCart(menu, quantity);
@@ -182,11 +182,11 @@ public class Main {
                 case "TOPUP" -> {
                     String userId = parts[1];
                     double amount = Double.parseDouble(parts[2]);
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         member.balanceTopup(amount);
-                    } else if (guests.containsKey(userId)) {
-                        User guest = guests.get(userId);
+                    } else if (users.containsKey(userId)) {
+                        User guest = users.get(userId);
                         guest.balanceTopup(amount);
                     } else {
                         System.out.println("TOPUP FAILED: NON EXISTENT CUSTOMER");
@@ -194,11 +194,11 @@ public class Main {
                 }
                 case "PRINT" -> {
                     String userId = parts[1];
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         member.viewCartItems();
-                    } else if (guests.containsKey(userId)) {
-                        User guest = guests.get(userId);
+                    } else if (users.containsKey(userId)) {
+                        User guest = users.get(userId);
                         guest.viewCartItems();
                     } else {
                         System.out.println("PRINT FAILED: NON EXISTENT CUSTOMER");
@@ -207,8 +207,8 @@ public class Main {
                 case "APPLY_PROMO" -> {
                     String userId = parts[1];
                     String promoId = parts[2];
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         if (promos.containsKey(promoId)) {
                             PromoCode promo = promos.get(promoId);
                             ((Member)member).applyPromoCode(promo);
@@ -221,11 +221,11 @@ public class Main {
                 }
                 case "CHECK_OUT" -> {
                     String userId = parts[1];
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         member.checkout();
-                    } else if (guests.containsKey(userId)) {
-                        User guest = guests.get(userId);
+                    } else if (users.containsKey(userId)) {
+                        User guest = users.get(userId);
                         guest.checkout();
                     } else {
                         System.out.println("CHECKOUT FAILED: NON EXISTENT CUSTOMER");
@@ -233,11 +233,11 @@ public class Main {
                 }
                 case "PRINT_HISTORY" -> {
                     String userId = parts[1];
-                    if (members.containsKey(userId)) {
-                        User member = members.get(userId);
+                    if (users.containsKey(userId)) {
+                        User member = users.get(userId);
                         member.viewOrderHistory();
-                    } else if (guests.containsKey(userId)) {
-                        User guest = guests.get(userId);
+                    } else if (users.containsKey(userId)) {
+                        User guest = users.get(userId);
                         guest.viewOrderHistory();
                     } else {
                         System.out.println("PRINT_HISTORY FAILED: NON EXISTENT CUSTOMER");

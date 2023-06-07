@@ -23,4 +23,14 @@ public abstract class Menu {
         return menuName;
     }
 
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    
+    
+
 }

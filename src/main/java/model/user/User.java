@@ -19,6 +19,10 @@ public abstract class User implements Cloneable {
         this.cart = new Cart(this, this.orderList);
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getUserName() {
         return userName;
     }

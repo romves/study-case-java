@@ -41,6 +41,10 @@ public class Member extends User implements Promo{
         System.out.println("APPLY_PROMO FAILED " + promoCode.getPromoCode());
     }
 
+    public String getJoinedDate() {
+        return joinedDate.toString();
+    }
+    
     public PromoCode getUserPromo() {
         return promoCode;
     }
