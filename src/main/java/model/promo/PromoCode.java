@@ -23,6 +23,32 @@ public class PromoCode {
           this.minApplicablePrice = minApplicablePrice;
      }
 
+    public void setPromoCode(String promoCode) {
+        this.promoCode = promoCode;
+    }
+
+    public void setStartedAt(LocalDate startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public void setExpiredAt(LocalDate expiredAt) {
+        this.expiredAt = expiredAt;
+    }
+
+    public void setPercentCut(int percentCut) {
+        this.percentCut = percentCut;
+    }
+
+    public void setMaxPriceCut(double maxPriceCut) {
+        this.maxPriceCut = maxPriceCut;
+    }
+
+    public void setMinApplicablePrice(double minApplicablePrice) {
+        this.minApplicablePrice = minApplicablePrice;
+    }
+     
+     
+     
      public String getPromoCode() {
           return promoCode;
      }
