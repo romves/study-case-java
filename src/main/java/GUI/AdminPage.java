@@ -1,0 +1,1586 @@
+package GUI;
+
+import data.DataManager;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Cetak;
+import model.Fotokopi;
+import model.Menu;
+import model.order.Order;
+import model.order.OrderItem;
+import model.promo.CashbackPromo;
+import model.promo.DeliveryPromo;
+import model.promo.DiscountPromo;
+import model.promo.PromoCode;
+import model.user.Guest;
+import model.user.Member;
+import model.user.User;
+import utils.LocalDateUtils;
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+/**
+ *
+ * @author PC
+ */
+public class AdminPage extends javax.swing.JFrame {
+
+    /**
+     * Creates new form AdminPage
+     */
+    public AdminPage() {
+        initComponents();
+        clearField();
+        loadMenu();
+    }
+
+    DefaultTableModel d;
+    DefaultTableModel x;
+
+    public void clearField() {
+        menuTypeSelect.setSelectedIndex(-1);
+        txtMenuID.setText(null);
+        txtMenuName.setText(null);
+        txtMenuPrice.setText(null);
+        txtMenuInfo.setText(null);
+        txtMenuID.setEnabled(true);
+        buttonSubmitMenu.setEnabled(true);
+
+        userTypeSelect.setSelectedIndex(-1);
+        txtJoinedDate.setText(null);
+        txtUserID.setText(null);
+        txtUserName.setText(null);
+        txtUserBalance.setText(null);
+        userTypeSelect.setEnabled(true);
+        menuTypeSelect.setEnabled(true);
+        buttonSubmitUser.setEnabled(true);
+        txtUserID.setEnabled(true);
+
+        promoTypeSelect.setSelectedIndex(-1);
+        txtPromoCode.setText(null);
+        txtStartAt.setText(null);
+        txtEndAt.setText(null);
+        txtPercentCut.setText(null);
+        txtMinTransaction.setText(null);
+        txtMaxCut.setText(null);
+        promoTypeSelect.setEnabled(true);
+        txtPromoCode.setEnabled(true);
+        buttonSubmitPromo.setEnabled(true);
+    }
+
+    public void loadMenu() {
+        d = (DefaultTableModel) menuTable.getModel();
+        d.setRowCount(0);
+
+        HashMap<String, Menu> menus = DataManager.menus;
+
+        for (Map.Entry<String, Menu> entry : menus.entrySet()) {
+            String menuId = entry.getKey();
+            Menu menu = entry.getValue();
+            String menuType = menu.getClass().getSimpleName();
+
+            // Extract the menu properties that you want to display in the table
+            String menuName = menu.getMenuName();
+            double price = menu.getPrice();
+
+            // Add the menu data to the table
+            Object[] rowData = {menuType, menuId, menuName, price};
+            d.addRow(rowData);
+        }
+    }
+
+    public void loadUsers() {
+        d = (DefaultTableModel) userTable.getModel();
+        d.setRowCount(0);
+
+        x = (DefaultTableModel) userListTable.getModel();
+        x.setRowCount(0);
+
+        HashMap<String, User> users = DataManager.users;
+
+        for (Map.Entry<String, User> entry : users.entrySet()) {
+            String userId = entry.getKey();
+            User user = entry.getValue();
+            String userType = user.getClass().getSimpleName();
+            String userName = user.getUserName();
+            double balance = user.getBalance();
+            String joinedDate = null;
+            if (user instanceof Member member) {
+                joinedDate = member.getJoinedDate();
+            }
+            // Add the menu data to the table
+            Object[] rowData = {userType, userId, userName, balance, joinedDate};
+            d.addRow(rowData);
+            Object[] rowData1 = {userId, userName};
+            x.addRow(rowData1);
+        }
+    }
+
+    public void loadPromo() {
+        d = (DefaultTableModel) promoTable.getModel();
+        d.setRowCount(0);
+
+        HashMap<String, PromoCode> promos = DataManager.promos;
+
+        for (Map.Entry<String, PromoCode> entry : promos.entrySet()) {
+            String promoCode = entry.getKey();
+            PromoCode promo = entry.getValue();
+            String promoType = promo.getClass().getSimpleName();
+            String promoStartAt = LocalDateUtils.convertLocalDateToString(promo.getStartedAt());
+            String promoEndAt = LocalDateUtils.convertLocalDateToString(promo.getExpiredAt());
+            int percentCut = promo.getPercentCut();
+            double minTransaction = promo.getMinApplicablePrice();
+            double maxCut = promo.getMaxPriceCut();
+
+            // Add the menu data to the table
+            Object[] rowData = {promoType, promoCode, promoStartAt, promoEndAt, percentCut, minTransaction, maxCut};
+            d.addRow(rowData);
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        menuPane = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        buttonSubmitMenu = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtMenuID = new javax.swing.JTextField();
+        txtMenuName = new javax.swing.JTextField();
+        txtMenuPrice = new javax.swing.JTextField();
+        txtMenuInfo = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        menuTable = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        buttonDeleteMenu = new javax.swing.JButton();
+        buttonClearMenu = new javax.swing.JButton();
+        buttonEditMenu = new javax.swing.JButton();
+        menuTypeSelect = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        buttonSubmitUser = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtUserID = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
+        txtUserBalance = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        buttonDeleteMenu1 = new javax.swing.JButton();
+        buttonClearMenu1 = new javax.swing.JButton();
+        buttonEditUser = new javax.swing.JButton();
+        userTypeSelect = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtJoinedDate = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        userTable = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        buttonSubmitPromo = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        txtPromoCode = new javax.swing.JTextField();
+        txtStartAt = new javax.swing.JTextField();
+        txtEndAt = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        buttonDeletePromo = new javax.swing.JButton();
+        buttonClearPromo = new javax.swing.JButton();
+        buttonEditPromo = new javax.swing.JButton();
+        promoTypeSelect = new javax.swing.JComboBox<>();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        txtMinTransaction = new javax.swing.JTextField();
+        txtPercentCut = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        txtMaxCut = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        promoTable = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tableOrderHistory = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        userListTable = new javax.swing.JTable();
+        jLabel11 = new javax.swing.JLabel();
+        labelSelectedUserList = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+
+        jMenu1.setText("jMenu1");
+
+        jMenu2.setText("jMenu2");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        menuPane.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                menuPaneComponentAdded(evt);
+            }
+        });
+        menuPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuPaneMouseClicked(evt);
+            }
+        });
+        menuPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                menuPaneComponentShown(evt);
+            }
+        });
+
+        buttonSubmitMenu.setText("Create");
+        buttonSubmitMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSubmitMenuActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Menu ID");
+
+        jLabel2.setText("Menu Name");
+
+        jLabel3.setText("Menu Price");
+
+        jLabel4.setText("Additional");
+
+        txtMenuID.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtMenuIDMouseClicked(evt);
+            }
+        });
+        txtMenuID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMenuIDActionPerformed(evt);
+            }
+        });
+
+        txtMenuName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMenuNameActionPerformed(evt);
+            }
+        });
+
+        txtMenuInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMenuInfoActionPerformed(evt);
+            }
+        });
+
+        menuTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Menu Type", "Menu Id", "Menu Name", "Menu Price", "Menu Info"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        menuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuTableMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuTableMousePressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(menuTable);
+        if (menuTable.getColumnModel().getColumnCount() > 0) {
+            menuTable.getColumnModel().getColumn(0).setResizable(false);
+            menuTable.getColumnModel().getColumn(1).setResizable(false);
+            menuTable.getColumnModel().getColumn(3).setResizable(false);
+            menuTable.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setText("Menu management");
+
+        buttonDeleteMenu.setText("Delete");
+        buttonDeleteMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteMenuActionPerformed(evt);
+            }
+        });
+
+        buttonClearMenu.setText("Clear");
+        buttonClearMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearMenuActionPerformed(evt);
+            }
+        });
+
+        buttonEditMenu.setText("Save Changes");
+        buttonEditMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditMenuActionPerformed(evt);
+            }
+        });
+
+        menuTypeSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cetak", "Fotokopi" }));
+        menuTypeSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuTypeSelectActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Menu Type");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(menuTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel4))
+                                    .addGap(48, 48, 48)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtMenuID, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(txtMenuName)
+                                            .addComponent(txtMenuPrice)
+                                            .addComponent(txtMenuInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(buttonSubmitMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buttonEditMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(buttonDeleteMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buttonClearMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addComponent(jLabel13)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {buttonClearMenu, buttonDeleteMenu, buttonEditMenu, buttonSubmitMenu});
+
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(menuTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMenuID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMenuName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMenuPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMenuInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonSubmitMenu)
+                    .addComponent(buttonEditMenu))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonDeleteMenu)
+                    .addComponent(buttonClearMenu))
+                .addGap(58, 58, 58))
+        );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {buttonClearMenu, buttonDeleteMenu, buttonEditMenu, buttonSubmitMenu});
+
+        menuPane.addTab("Menu", jPanel1);
+
+        buttonSubmitUser.setText("Create");
+        buttonSubmitUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSubmitUserActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("User ID");
+
+        jLabel7.setText("Name");
+
+        jLabel8.setText("Balance");
+
+        txtUserID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserIDActionPerformed(evt);
+            }
+        });
+
+        txtUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserNameActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel24.setText("User management");
+
+        buttonDeleteMenu1.setText("Delete");
+        buttonDeleteMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteMenu1ActionPerformed(evt);
+            }
+        });
+
+        buttonClearMenu1.setText("Clear");
+        buttonClearMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearMenu1ActionPerformed(evt);
+            }
+        });
+
+        buttonEditUser.setText("Save Changes");
+        buttonEditUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditUserActionPerformed(evt);
+            }
+        });
+
+        userTypeSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Member", "Guest" }));
+        userTypeSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userTypeSelectActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Type");
+
+        jLabel9.setText("JoinedDate");
+
+        txtJoinedDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtJoinedDateActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(39, 39, 39)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel10)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(userTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel8))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtUserID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUserBalance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addGap(48, 48, 48)
+                            .addComponent(txtJoinedDate, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(51, 51, 51)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(buttonSubmitUser, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(buttonEditUser, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(buttonDeleteMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(buttonClearMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel24)
+                .addGap(63, 63, 63))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel24)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUserID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUserBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtJoinedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonSubmitUser)
+                    .addComponent(buttonEditUser))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonDeleteMenu1)
+                    .addComponent(buttonClearMenu1))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
+        userTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Type", "User Id", "Name", "Balance", "JoinedDate"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        userTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userTableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(userTable);
+        if (userTable.getColumnModel().getColumnCount() > 0) {
+            userTable.getColumnModel().getColumn(0).setResizable(false);
+            userTable.getColumnModel().getColumn(1).setResizable(false);
+            userTable.getColumnModel().getColumn(3).setResizable(false);
+            userTable.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(367, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(611, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        menuPane.addTab("User", jPanel2);
+
+        buttonSubmitPromo.setText("Create");
+        buttonSubmitPromo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSubmitPromoActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Promo Code");
+
+        jLabel18.setText("StartAt");
+
+        jLabel26.setText("EndAt");
+
+        txtPromoCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPromoCodeActionPerformed(evt);
+            }
+        });
+
+        txtStartAt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStartAtActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel27.setText("Promo Management");
+
+        buttonDeletePromo.setText("Delete");
+        buttonDeletePromo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeletePromoActionPerformed(evt);
+            }
+        });
+
+        buttonClearPromo.setText("Clear");
+        buttonClearPromo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearPromoActionPerformed(evt);
+            }
+        });
+
+        buttonEditPromo.setText("Save Changes");
+        buttonEditPromo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditPromoActionPerformed(evt);
+            }
+        });
+
+        promoTypeSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CashbackPromo", "DeliveryPromo", "DiscountPromo" }));
+        promoTypeSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                promoTypeSelectActionPerformed(evt);
+            }
+        });
+
+        jLabel28.setText("Type");
+
+        jLabel29.setText("minTransaction");
+
+        txtMinTransaction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMinTransactionActionPerformed(evt);
+            }
+        });
+
+        txtPercentCut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPercentCutActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setText("Percent Cut");
+
+        jLabel31.setText("maxCut");
+
+        txtMaxCut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaxCutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(buttonSubmitPromo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonEditPromo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(buttonDeletePromo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonClearPromo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel31)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtMaxCut, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel30)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtPercentCut, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel28)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(promoTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel26))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPromoCode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtStartAt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEndAt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel29)
+                                .addGap(48, 48, 48)
+                                .addComponent(txtMinTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addComponent(jLabel27)))
+                .addContainerGap(530, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel27)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(promoTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPromoCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtStartAt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEndAt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPercentCut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel30))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel29)
+                    .addComponent(txtMinTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(txtMaxCut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonSubmitPromo)
+                    .addComponent(buttonEditPromo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonDeletePromo)
+                    .addComponent(buttonClearPromo))
+                .addGap(22, 22, 22))
+        );
+
+        promoTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Type", "Code", "StartAt", "EndAt", "PercentCut", "minApplicable", "maxCut"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        promoTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                promoTableMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(promoTable);
+        if (promoTable.getColumnModel().getColumnCount() > 0) {
+            promoTable.getColumnModel().getColumn(0).setResizable(false);
+            promoTable.getColumnModel().getColumn(1).setResizable(false);
+            promoTable.getColumnModel().getColumn(3).setResizable(false);
+            promoTable.getColumnModel().getColumn(4).setResizable(false);
+            promoTable.getColumnModel().getColumn(5).setResizable(false);
+            promoTable.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(366, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(60, Short.MAX_VALUE)))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        menuPane.addTab("Promo", jPanel4);
+
+        tableOrderHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "No", "Nomor Pesanan", "Jumlah", "Subtotal", "Promo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tableOrderHistory);
+        if (tableOrderHistory.getColumnModel().getColumnCount() > 0) {
+            tableOrderHistory.getColumnModel().getColumn(0).setResizable(false);
+            tableOrderHistory.getColumnModel().getColumn(1).setResizable(false);
+            tableOrderHistory.getColumnModel().getColumn(2).setResizable(false);
+            tableOrderHistory.getColumnModel().getColumn(3).setResizable(false);
+            tableOrderHistory.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        userListTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "User ID", "Username"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        userListTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userListTableMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(userListTable);
+        if (userListTable.getColumnModel().getColumnCount() > 0) {
+            userListTable.getColumnModel().getColumn(0).setResizable(false);
+            userListTable.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("User List");
+
+        labelSelectedUserList.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelSelectedUserList.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSelectedUserList.setText("No user is selected");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelSelectedUserList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 594, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(labelSelectedUserList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+
+        menuPane.addTab("OrderList", jPanel5);
+
+        jLabel12.setText("Logout");
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
+        });
+
+        jMenu3.setText("File");
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar1.add(jMenu4);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(menuPane, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(menuPane, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void txtMenuIDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMenuIDMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMenuIDMouseClicked
+
+    private void userListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userListTableMouseClicked
+        // TODO add your handling code here:
+        x = (DefaultTableModel) tableOrderHistory.getModel();
+        
+        d = (DefaultTableModel) userListTable.getModel();
+        int selectedIndex = userListTable.getSelectedRow();
+        
+        HashMap<String, User> users = DataManager.users;
+        try {
+            labelSelectedUserList.setText(d.getValueAt(selectedIndex, 1).toString() + " " + d.getValueAt(selectedIndex, 0) + " is selected");
+            User user = users.get(d.getValueAt(selectedIndex, 0).toString()).getOrderList().getUser();
+            user.getOrderList().getOrderHistory();
+            List<OrderItem> orderList = user.getOrderList().getOrders();
+            int i = 1;
+            for (OrderItem orderItem : orderList) {
+                // Add the menu data to the table
+                Object[] rowData = {i, orderItem.getOrderNumber(), orderItem.getQuantity(), orderItem.getTotalPrice(), orderItem.getAppliedPromo()};
+                x.addRow(rowData);
+                i++;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+
+    }//GEN-LAST:event_userListTableMouseClicked
+
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        Login login = new Login();
+        login.setVisible(true);
+    }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void menuTypeSelectActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_menuTypeSelectActionPerformed
+        // TODO add your handling code here:
+        if (menuTypeSelect.getSelectedIndex() != -1) {
+            if (menuTypeSelect.getSelectedItem().toString().equalsIgnoreCase("Cetak")) {
+                txtMenuInfo.setEnabled(false);
+                return;
+            }
+        }
+        txtMenuInfo.setEnabled(true);
+    }// GEN-LAST:event_menuTypeSelectActionPerformed
+
+    private void buttonEditMenuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonEditMenuActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, Menu> menus = DataManager.menus;
+        try {
+
+            String menuId = txtMenuID.getText();
+            String menuName = txtMenuName.getText();
+            double menuPrice = Double.parseDouble(txtMenuPrice.getText());
+            String menuInfo = txtMenuInfo.getText();
+            String menuType = menuTypeSelect.getSelectedItem().toString();
+
+            if (menus.containsKey(menuId)) {
+                Menu editedMenu = menus.get(menuId);
+                editedMenu.setMenuName(menuName);
+                editedMenu.setPrice(menuPrice);
+            }
+            JOptionPane.showMessageDialog(this, "Edit Success");
+            clearField();
+            loadMenu();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input a valid data");
+        }
+
+    }// GEN-LAST:event_buttonEditMenuActionPerformed
+
+    private void buttonClearMenuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonClearMenuActionPerformed
+        // TODO add your handling code here:
+        clearField();
+    }// GEN-LAST:event_buttonClearMenuActionPerformed
+
+    private void buttonDeleteMenuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonDeleteMenuActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, Menu> menus = DataManager.menus;
+        String menuId = txtMenuID.getText();
+        if (menus.containsKey(menuId)) {
+            Menu removedMenu = menus.remove(menuId);
+            JOptionPane.showMessageDialog(this, "Delete Success");
+            loadMenu();
+            clearField();
+        } else {
+            JOptionPane.showMessageDialog(this, "ID not found");
+        }
+    }// GEN-LAST:event_buttonDeleteMenuActionPerformed
+
+    private void menuTableMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_menuTableMouseClicked
+        // TODO add your handling code here:
+        menuTypeSelect.setEnabled(false);
+        txtMenuID.setEnabled(false);
+        buttonSubmitMenu.setEnabled(false);
+        d = (DefaultTableModel) menuTable.getModel();
+        int selectedIndex = menuTable.getSelectedRow();
+
+        menuTypeSelect.setSelectedItem(d.getValueAt(selectedIndex, 0).toString());
+        txtMenuID.setText(d.getValueAt(selectedIndex, 1).toString());
+        txtMenuName.setText(d.getValueAt(selectedIndex, 2).toString());
+        txtMenuPrice.setText(d.getValueAt(selectedIndex, 3).toString());
+    }// GEN-LAST:event_menuTableMouseClicked
+
+    private void txtMenuInfoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMenuInfoActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtMenuInfoActionPerformed
+
+    private void txtMenuNameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMenuNameActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtMenuNameActionPerformed
+
+    private void txtMenuIDActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMenuIDActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtMenuIDActionPerformed
+
+    private void buttonSubmitMenuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonSubmitMenuActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, Menu> menus = DataManager.menus;
+        try {
+            String menuId = txtMenuID.getText();
+            String menuName = txtMenuName.getText();
+            double menuPrice = Double.parseDouble(txtMenuPrice.getText());
+            String menuInfo = txtMenuInfo.getText();
+            String menuType = menuTypeSelect.getSelectedItem().toString();
+
+            if (menuType.equalsIgnoreCase("CETAK")) {
+                if (menus.containsKey(menuId)) {
+                    System.out.println("Create menu failed: " + menuId + " is exist");
+                    JOptionPane.showMessageDialog(this, "Create menu failed: " + menuId + " is exist");
+                } else {
+                    Menu cetak = new Cetak(menuId, menuName, menuPrice);
+                    menus.put(menuId, cetak);
+                    JOptionPane.showMessageDialog(this, "Create menu success");
+                    loadMenu();
+                }
+            } else if (menuType.equalsIgnoreCase("FOTOKOPI")) {
+                if (menus.containsKey(menuId)) {
+                    System.out.println("Create menu failed: " + menuId + " is exist");
+                    JOptionPane.showMessageDialog(this, "Create menu failed: " + menuId + " is exist");
+                } else {
+                    Menu fotokopi = new Fotokopi(menuId, menuName, menuPrice, true);
+                    menus.put(menuId, fotokopi);
+                    JOptionPane.showMessageDialog(this, "Create menu success");
+                    loadMenu();
+                }
+            }
+            clearField();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input a valid data");
+        }
+    }// GEN-LAST:event_buttonSubmitMenuActionPerformed
+
+    private void userTableMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_userTableMouseClicked
+        // TODO add your handling code here:
+        userTypeSelect.setEnabled(false);
+        txtUserID.setEnabled(false);
+        buttonSubmitUser.setEnabled(false);
+        d = (DefaultTableModel) userTable.getModel();
+        int selectedIndex = userTable.getSelectedRow();
+
+        userTypeSelect.setSelectedItem(d.getValueAt(selectedIndex, 0).toString());
+        txtUserID.setText(d.getValueAt(selectedIndex, 1).toString());
+        txtUserName.setText(d.getValueAt(selectedIndex, 2).toString());
+        txtUserBalance.setText(d.getValueAt(selectedIndex, 3).toString());
+        String selectedUserType = userTypeSelect.getSelectedItem().toString();
+        if (selectedUserType.equalsIgnoreCase("Member")) {
+            txtJoinedDate.setText(LocalDateUtils.convertDateFormat(d.getValueAt(selectedIndex, 4).toString()));
+        }
+    }// GEN-LAST:event_userTableMouseClicked
+
+    private void menuPaneMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_menuPaneMouseClicked
+        // TODO add your handling code here:
+        loadMenu();
+        loadPromo();
+        loadUsers();
+    }// GEN-LAST:event_menuPaneMouseClicked
+
+    private void menuPaneComponentShown(java.awt.event.ComponentEvent evt) {// GEN-FIRST:event_menuPaneComponentShown
+        // TODO add your handling code here:
+
+    }// GEN-LAST:event_menuPaneComponentShown
+
+    private void menuPaneComponentAdded(java.awt.event.ContainerEvent evt) {// GEN-FIRST:event_menuPaneComponentAdded
+        // TODO add your handling code here:
+    }// GEN-LAST:event_menuPaneComponentAdded
+
+    private void menuTableMousePressed(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_menuTableMousePressed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_menuTableMousePressed
+
+    private void buttonSubmitPromoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonSubmitPromoActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, PromoCode> promos = DataManager.promos;
+        try {
+            String promoType = promoTypeSelect.getSelectedItem().toString();
+            String promoCode = txtPromoCode.getText();
+            String promoStartAt = txtStartAt.getText();
+            String promoEndAt = txtEndAt.getText();
+            String promoDiscount = txtPercentCut.getText();
+            double minTransaction = Double.parseDouble(txtMinTransaction.getText());
+            double maxCut = Double.parseDouble(txtMaxCut.getText());
+
+            if (promoType.equalsIgnoreCase("CASHBACKPROMO")) {
+                if (promos.containsKey(promoCode)) {
+                    JOptionPane.showMessageDialog(this, "Create user failed: " + promoCode + " is exist");
+                } else {
+                    PromoCode promo = new CashbackPromo(promoCode, promoStartAt, promoEndAt, promoDiscount,
+                            minTransaction, maxCut);
+                    promos.put(promoCode, promo);
+                    JOptionPane.showMessageDialog(this, "Create promo success");
+                    loadPromo();
+                }
+            } else if (promoType.equalsIgnoreCase("DELIVERYPROMO")) {
+                if (promos.containsKey(promoCode)) {
+                    JOptionPane.showMessageDialog(this, "Create promo failed: " + promoCode + " already exists");
+                } else {
+                    PromoCode promo = new DeliveryPromo(promoCode, promoStartAt, promoEndAt, promoDiscount,
+                            minTransaction, maxCut);
+                    promos.put(promoCode, promo);
+                    JOptionPane.showMessageDialog(this, "Create promo success");
+                    loadPromo();
+                }
+            } else if (promoType.equalsIgnoreCase("DISCOUNTPROMO")) {
+                if (promos.containsKey(promoCode)) {
+                    JOptionPane.showMessageDialog(this, "Create promo failed: " + promoCode + " already exists");
+                } else {
+                    PromoCode promo = new DiscountPromo(promoCode, promoStartAt, promoEndAt, promoDiscount,
+                            minTransaction, maxCut);
+                    promos.put(promoCode, promo);
+                    JOptionPane.showMessageDialog(this, "Create promo success");
+                    loadPromo();
+                }
+            }
+            clearField();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }// GEN-LAST:event_buttonSubmitPromoActionPerformed
+
+    private void txtPromoCodeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtPromoCodeActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtPromoCodeActionPerformed
+
+    private void txtStartAtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtStartAtActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtStartAtActionPerformed
+
+    private void promoTableMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_promoTableMouseClicked
+        // TODO add your handling code here:
+        promoTypeSelect.setEnabled(false);
+        txtPromoCode.setEnabled(false);
+        buttonSubmitPromo.setEnabled(false);
+        d = (DefaultTableModel) promoTable.getModel();
+        int selectedIndex = promoTable.getSelectedRow();
+
+        promoTypeSelect.setSelectedItem(d.getValueAt(selectedIndex, 0).toString());
+        txtPromoCode.setText(d.getValueAt(selectedIndex, 1).toString());
+        txtStartAt.setText(d.getValueAt(selectedIndex, 2).toString());
+        txtEndAt.setText(d.getValueAt(selectedIndex, 3).toString());
+        txtPercentCut.setText(d.getValueAt(selectedIndex, 4).toString());
+        txtMinTransaction.setText(d.getValueAt(selectedIndex, 5).toString());
+        txtMaxCut.setText(d.getValueAt(selectedIndex, 6).toString());
+    }// GEN-LAST:event_promoTableMouseClicked
+
+    private void buttonDeletePromoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonDeletePromoActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, PromoCode> promos = DataManager.promos;
+        String promoCode = txtPromoCode.getText();
+        if (promos.containsKey(promoCode)) {
+            promos.remove(promoCode);
+            JOptionPane.showMessageDialog(this, "Delete Success");
+            loadPromo();
+            clearField();
+        } else {
+            JOptionPane.showMessageDialog(this, "ID not found");
+        }
+    }// GEN-LAST:event_buttonDeletePromoActionPerformed
+
+    private void buttonClearPromoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonClearPromoActionPerformed
+        // TODO add your handling code here:
+        clearField();
+    }// GEN-LAST:event_buttonClearPromoActionPerformed
+
+    private void buttonEditPromoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonEditPromoActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, PromoCode> promos = DataManager.promos;
+        try {
+            txtPromoCode.setEnabled(false);
+            String promoCode = txtPromoCode.getText();
+            String promoStartAt = txtStartAt.getText();
+            String promoEndAt = txtEndAt.getText();
+            String promoDiscount = txtPercentCut.getText();
+            double minTransaction = Double.parseDouble(txtMinTransaction.getText());
+            double maxCut = Double.parseDouble(txtMaxCut.getText());
+
+            if (promos.containsKey(promoCode)) {
+                PromoCode editedPromo = promos.get(promoCode);
+                editedPromo.setStartedAt(LocalDateUtils.convertStringToLocalDate(promoStartAt));
+                editedPromo.setExpiredAt(LocalDateUtils.convertStringToLocalDate(promoEndAt));
+                editedPromo.setPercentCut(Integer.parseInt(promoDiscount));
+                editedPromo.setMinApplicablePrice(minTransaction);
+                editedPromo.setMaxPriceCut(maxCut);
+            }
+            JOptionPane.showMessageDialog(this, "Edit Success");
+            clearField();
+            loadPromo();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input a valid data");
+        }
+    }// GEN-LAST:event_buttonEditPromoActionPerformed
+
+    private void promoTypeSelectActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_promoTypeSelectActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_promoTypeSelectActionPerformed
+
+    private void txtMinTransactionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMinTransactionActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtMinTransactionActionPerformed
+
+    private void txtPercentCutActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtPercentCutActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtPercentCutActionPerformed
+
+    private void txtMaxCutActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMaxCutActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtMaxCutActionPerformed
+
+    private void txtJoinedDateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtJoinedDateActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtJoinedDateActionPerformed
+
+    private void userTypeSelectActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_userTypeSelectActionPerformed
+        // TODO add your handling code here:
+        if (userTypeSelect.getSelectedIndex() != -1) {
+            if (userTypeSelect.getSelectedItem().toString().equalsIgnoreCase("Guest")) {
+                txtUserName.setEnabled(false);
+                txtJoinedDate.setEnabled(false);
+                return;
+            }
+        }
+        txtUserName.setEnabled(true);
+        txtJoinedDate.setEnabled(true);
+
+    }// GEN-LAST:event_userTypeSelectActionPerformed
+
+    private void buttonEditUserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonEditUserActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, User> users = DataManager.users;
+        try {
+            String userId = txtUserID.getText();
+            String userName = txtUserName.getText();
+            double balance = Double.parseDouble(txtUserBalance.getText());
+            String userType = userTypeSelect.getSelectedItem().toString();
+            String joinedDate = txtJoinedDate.getText();
+
+            if (users.containsKey(userId)) {
+                User editedUser = users.get(userId);
+                editedUser.setUserName(userName);
+                editedUser.setBalance(balance);
+            }
+            JOptionPane.showMessageDialog(this, "Edit Success");
+            clearField();
+            loadUsers();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input a valid data");
+        }
+    }// GEN-LAST:event_buttonEditUserActionPerformed
+
+    private void buttonClearMenu1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonClearMenu1ActionPerformed
+        // TODO add your handling code here:
+        clearField();
+    }// GEN-LAST:event_buttonClearMenu1ActionPerformed
+
+    private void buttonDeleteMenu1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonDeleteMenu1ActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, User> users = DataManager.users;
+        String userId = txtUserID.getText();
+        if (users.containsKey(userId)) {
+            users.remove(userId);
+            JOptionPane.showMessageDialog(this, "Delete Success");
+            loadUsers();
+            clearField();
+        } else {
+            JOptionPane.showMessageDialog(this, "ID not found");
+        }
+    }// GEN-LAST:event_buttonDeleteMenu1ActionPerformed
+
+    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtUserNameActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtUserNameActionPerformed
+
+    private void txtUserIDActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtUserIDActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtUserIDActionPerformed
+
+    private void buttonSubmitUserActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_buttonSubmitUserActionPerformed
+        // TODO add your handling code here:
+        HashMap<String, User> users = DataManager.users;
+        try {
+            String userType = userTypeSelect.getSelectedItem().toString();
+            String userId = txtUserID.getText();
+            String userName = txtUserName.getText();
+            String joinedDate = txtJoinedDate.getText();
+            double userBalance = Double.parseDouble(txtUserBalance.getText());
+
+            if (userType.equalsIgnoreCase("MEMBER")) {
+                if (users.containsKey(userId)) {
+                    System.out.println("Create user failed: " + userId + " is exist");
+                    JOptionPane.showMessageDialog(this, "Create user failed: " + userId + " is exist");
+                } else {
+                    User member = new Member(userId, userName, joinedDate, userBalance);
+                    users.put(userId, member);
+                    JOptionPane.showMessageDialog(this, "Create user success");
+                    loadUsers();
+                }
+            } else if (userType.equalsIgnoreCase("GUEST")) {
+                if (users.containsKey(userId)) {
+                    System.out.println("Create user failed: " + userId + " is exist");
+                    JOptionPane.showMessageDialog(this, "Create user failed: " + userId + " is exist");
+                } else {
+                    User guest = new Guest(userId, userBalance);
+                    users.put(userId, guest);
+                    JOptionPane.showMessageDialog(this, "Create user success");
+                    loadUsers();
+                }
+            }
+            clearField();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }// GEN-LAST:event_buttonSubmitUserActionPerformed
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel.
+         * For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        // </editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AdminPage().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonClearMenu;
+    private javax.swing.JButton buttonClearMenu1;
+    private javax.swing.JButton buttonClearPromo;
+    private javax.swing.JButton buttonDeleteMenu;
+    private javax.swing.JButton buttonDeleteMenu1;
+    private javax.swing.JButton buttonDeletePromo;
+    private javax.swing.JButton buttonEditMenu;
+    private javax.swing.JButton buttonEditPromo;
+    private javax.swing.JButton buttonEditUser;
+    private javax.swing.JButton buttonSubmitMenu;
+    private javax.swing.JButton buttonSubmitPromo;
+    private javax.swing.JButton buttonSubmitUser;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JLabel labelSelectedUserList;
+    private javax.swing.JTabbedPane menuPane;
+    private javax.swing.JTable menuTable;
+    private javax.swing.JComboBox<String> menuTypeSelect;
+    private javax.swing.JTable promoTable;
+    private javax.swing.JComboBox<String> promoTypeSelect;
+    private javax.swing.JTable tableOrderHistory;
+    private javax.swing.JTextField txtEndAt;
+    private javax.swing.JTextField txtJoinedDate;
+    private javax.swing.JTextField txtMaxCut;
+    private javax.swing.JTextField txtMenuID;
+    private javax.swing.JTextField txtMenuInfo;
+    private javax.swing.JTextField txtMenuName;
+    private javax.swing.JTextField txtMenuPrice;
+    private javax.swing.JTextField txtMinTransaction;
+    private javax.swing.JTextField txtPercentCut;
+    private javax.swing.JTextField txtPromoCode;
+    private javax.swing.JTextField txtStartAt;
+    private javax.swing.JTextField txtUserBalance;
+    private javax.swing.JTextField txtUserID;
+    private javax.swing.JTextField txtUserName;
+    private javax.swing.JTable userListTable;
+    private javax.swing.JTable userTable;
+    private javax.swing.JComboBox<String> userTypeSelect;
+    // End of variables declaration//GEN-END:variables
+}
