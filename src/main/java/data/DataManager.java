@@ -14,8 +14,8 @@ import model.user.User;
  * @author PC
  */
 public class DataManager {
-    public static HashMap<String, User> members = new HashMap<>();
-    public static HashMap<String, User> guests = new HashMap<>();
+//    public static HashMap<String, User> members = new HashMap<>();
+//    public static HashMap<String, User> guests = new HashMap<>();
     public static HashMap<String, User> users = new HashMap<>();
     public static HashMap<String, Menu> menus = new HashMap<>();
     public static HashMap<String, PromoCode> promos = new HashMap<>();

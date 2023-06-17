@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private List<OrderItem> orders;
+    public List<OrderItem> orders;
     private User user;
 
     public Order(User user){
@@ -27,6 +27,18 @@ public class Order {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public List<OrderItem> getOrders() {
+        return orders;
+    }
+
+    public OrderItem getLastOrders() {
+        return orders.get(orders.size()-1);
+    }
+    
     public void handleCheckout(Cart cart) {
         String appliedPromo = "";
         if (user instanceof Member) {
@@ -132,6 +144,4 @@ public class Order {
         System.out.printf("%-27s: %9s\n", "Sisa Saldo", balance); //shopping cart Saldo bukan Sisa saldo
         System.out.println();
     }
-
-
 }

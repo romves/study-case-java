@@ -18,11 +18,19 @@ public abstract class User implements Cloneable {
         this.orderList = new Order(this);
         this.cart = new Cart(this, this.orderList);
     }
-
+    
+    public boolean isAdmin(){
+        return true;
+    }
+    
+    public Order getOrderList() {
+        return orderList;
+    }
+    
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
+    
     public String getUserName() {
         return userName;
     }
@@ -65,7 +73,7 @@ public abstract class User implements Cloneable {
     public void checkout() {
         cart.checkoutCart();
     }
-
+    
     public void viewCartItems() {
        if(cart.getListItem().isEmpty()) {
            orderList.getLastOrderDetails();
@@ -73,7 +81,7 @@ public abstract class User implements Cloneable {
        }
         cart.viewAllCartItem();
     }
-
+//    publc void v
     public void viewOrderHistory() {
         orderList.getOrderHistory();
     }

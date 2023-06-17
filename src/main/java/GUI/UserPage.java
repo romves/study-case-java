@@ -6,6 +6,7 @@ package GUI;
 
 import javax.swing.JFrame;
 import data.DataManager;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -44,6 +45,7 @@ public class UserPage extends javax.swing.JFrame {
 //    Statement state=null;
 
     DefaultTableModel d;
+    DefaultTableModel ds;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,9 +56,7 @@ public class UserPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         AddButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         cartTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
@@ -67,20 +67,15 @@ public class UserPage extends javax.swing.JFrame {
         menuIDLabel = new javax.swing.JLabel();
         labelJumlah = new javax.swing.JLabel();
         jumlahTextField = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        editButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         menuTable = new javax.swing.JTable();
+        menuIDLabel1 = new javax.swing.JLabel();
+        pembayaranButton = new javax.swing.JButton();
+        subTotalTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Save Change");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         AddButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         AddButton.setText("Add");
@@ -95,14 +90,6 @@ public class UserPage extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setText("Clear Form");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         cartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -113,7 +100,9 @@ public class UserPage extends javax.swing.JFrame {
         ));
         cartTable.setShowHorizontalLines(true);
         cartTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cartTableMouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(cartTable);
 
@@ -154,6 +143,7 @@ public class UserPage extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
+        menuIDTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuIDTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuIDTextFieldActionPerformed(evt);
@@ -166,17 +156,23 @@ public class UserPage extends javax.swing.JFrame {
         labelJumlah.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelJumlah.setText("Jumlah :");
 
+        jumlahTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jumlahTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jumlahTextFieldActionPerformed(evt);
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton4.setText("Edit");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        editButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        editButton.setText("Edit");
+        editButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editButtonMouseClicked(evt);
+            }
+        });
+        editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                editButtonActionPerformed(evt);
             }
         });
 
@@ -208,6 +204,29 @@ public class UserPage extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(menuTable);
 
+        menuIDLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        menuIDLabel1.setText("Subtotal :");
+
+        pembayaranButton.setText("Lanjutkan ke pembayaran");
+        pembayaranButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pembayaranButtonMouseClicked(evt);
+            }
+        });
+        pembayaranButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pembayaranButtonActionPerformed(evt);
+            }
+        });
+
+        subTotalTextField.setEditable(false);
+        subTotalTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        subTotalTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subTotalTextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -220,26 +239,30 @@ public class UserPage extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addGap(133, 133, 133))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(391, 391, 391)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(labelJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AddButton)
-                        .addComponent(jButton4))
-                    .addComponent(menuIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(menuIDTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                    .addComponent(jumlahTextField))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(menuIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddButton))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editButton)
+                            .addComponent(jumlahTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(menuIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(menuIDLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(subTotalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pembayaranButton))
+                .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,38 +276,41 @@ public class UserPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(82, 82, 82)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(menuIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(menuIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(menuIDLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(subTotalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(menuIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(menuIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jumlahTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(labelJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jumlahTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AddButton)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
-                .addGap(21, 21, 21))
+                    .addComponent(editButton)
+                    .addComponent(pembayaranButton))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    private void cartTableMouseClicked(java.awt.event.MouseEvent evt) {
 
+    }
     private void menuIDTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuIDTextFieldActionPerformed
         // TODO add your handling code here:
 
 
     }//GEN-LAST:event_menuIDTextFieldActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
         // TODO add your handling code here:
@@ -302,14 +328,9 @@ public class UserPage extends javax.swing.JFrame {
         login.setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_editButtonActionPerformed
     public void loadMenu() {
         d = (DefaultTableModel) menuTable.getModel();
         d.setRowCount(0);
@@ -329,6 +350,7 @@ public class UserPage extends javax.swing.JFrame {
 
     public void loadCart() {
         d = (DefaultTableModel) cartTable.getModel();
+//        ds = (DefaultTableModel) subTotalTable.getModel();
         d.setRowCount(0);
         String userID = Login.userIDLogin;
         HashMap<String, User> users = DataManager.users;
@@ -341,10 +363,17 @@ public class UserPage extends javax.swing.JFrame {
                 String menuID = item.getMenu().getMenuID();
                 String menuType = item.getMenu().getClass().getSimpleName();
                 double price = item.getSubtotal();
+
                 Object[] rowData = {menuID, menuName, menuType, quantity, price};
                 d.addRow(rowData);
+
             }
-        
+            double subtotal = user.getCart().getItemSubTotal();
+            subTotalTextField.setText(String.valueOf(subtotal));
+            subTotalTextField.setEditable(false);
+//            Object[] sub = {subtotal};
+//            ds.addRow(sub);
+
         }
     }
 
@@ -356,29 +385,80 @@ public class UserPage extends javax.swing.JFrame {
         int quantity = Integer.parseInt(jumlahTextField.getText());
         HashMap<String, User> users = DataManager.users;
         HashMap<String, Menu> menus = DataManager.menus;
-        if (users.containsKey(userId)) {
-            User member = users.get(userId);
-            if (menus.containsKey(IDMenu)) {
-                Menu menu = menus.get(IDMenu);
-                member.addToCart(menu, quantity);
+        try {
+            if (users.containsKey(userId)) {
+                User member = users.get(userId);
+                if (menus.containsKey(IDMenu)) {
+                    Menu menu = menus.get(IDMenu);
+                    member.addToCart(menu, quantity);
+                } else {
+                    System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                }
+            } else if (users.containsKey(userId)) {
+                User guest = users.get(userId);
+                if (menus.containsKey(IDMenu)) {
+                    Menu menu = menus.get(IDMenu);
+                    guest.addToCart(menu, quantity);
+                } else {
+                    System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                }
             } else {
                 System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
             }
-        } else if (users.containsKey(userId)) {
-            User guest = users.get(userId);
-            if (menus.containsKey(IDMenu)) {
-                Menu menu = menus.get(IDMenu);
-                guest.addToCart(menu, quantity);
-            } else {
-                System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
-            }
-        } else {
-            System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+            loadCart();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
-        loadCart();
-
 
     }//GEN-LAST:event_AddButtonMouseClicked
+
+    private void editButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseClicked
+        // TODO add your handling code here:
+        String userId = Login.userIDLogin;
+        String IDMenu = menuIDTextField.getText();
+        int quantity = Integer.parseInt(jumlahTextField.getText());
+        HashMap<String, User> users = DataManager.users;
+        HashMap<String, Menu> menus = DataManager.menus;
+        try {
+            if (users.containsKey(userId)) {
+                User member = users.get(userId);
+                if (menus.containsKey(IDMenu)) {
+                    Menu menu = menus.get(IDMenu);
+                    member.removeFromCart(menu, quantity);
+                } else {
+                    System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                }
+            } else if (users.containsKey(userId)) {
+                User guest = users.get(userId);
+                if (menus.containsKey(IDMenu)) {
+                    Menu menu = menus.get(IDMenu);
+                    guest.removeFromCart(menu, quantity);
+                } else {
+                    System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+                }
+            } else {
+                System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+            }
+            loadCart();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_editButtonMouseClicked
+
+    private void pembayaranButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pembayaranButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pembayaranButtonActionPerformed
+
+    private void pembayaranButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pembayaranButtonMouseClicked
+        // TODO add your handling code here:
+        dispose();
+        CheckoutPage checkout = new CheckoutPage();
+        checkout.setVisible(true);
+    }//GEN-LAST:event_pembayaranButtonMouseClicked
+
+    private void subTotalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subTotalTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subTotalTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -553,9 +633,7 @@ public class UserPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddButton;
     private javax.swing.JTable cartTable;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton editButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
@@ -566,7 +644,10 @@ public class UserPage extends javax.swing.JFrame {
     private javax.swing.JTextField jumlahTextField;
     private javax.swing.JLabel labelJumlah;
     private javax.swing.JLabel menuIDLabel;
+    private javax.swing.JLabel menuIDLabel1;
     private javax.swing.JTextField menuIDTextField;
     private javax.swing.JTable menuTable;
+    private javax.swing.JButton pembayaranButton;
+    private javax.swing.JTextField subTotalTextField;
     // End of variables declaration//GEN-END:variables
 }
